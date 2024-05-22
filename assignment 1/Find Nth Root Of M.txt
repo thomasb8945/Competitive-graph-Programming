@@ -1,0 +1,24 @@
+#include <cmath>
+
+int NthRoot(int n, int m) {
+    if (n <= 0 || m <= 0 || m > INT_MAX) {
+        throw std::invalid_argument("Invalid input");
+    }
+
+    int start = 1, end = m;
+
+    while (start <= end) {
+        int mid = start + (end - start) / 2;
+        double num = pow(mid, n);
+
+        if (abs(num - m) < 1e-6) {
+            return mid;
+        } else if (num > m) {
+            end = mid - 1;
+        } else if (num < m) {
+            start = mid + 1;
+        }
+    }
+
+    return -1;
+}
