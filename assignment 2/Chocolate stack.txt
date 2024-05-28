@@ -1,0 +1,42 @@
+#include <stack>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+vector<int> solve(int N, vector<int> C) {
+    stack<int> st;
+    vector<int> sold;
+
+    for (int i = 0; i < N; i++) {
+        if (C[i] > 0) {
+            // Receive a new box of chocolates
+            st.push(C[i]);
+        } else {
+            // Sell the top box of chocolates
+            if (!st.empty()) {
+                sold.push_back(st.top());
+                st.pop();
+            }
+        }
+    }
+
+    return sold;
+}
+
+int main() {
+    int N;
+    cin >> N;
+    vector<int> C(N);
+    for (int i = 0; i < N; i++) {
+        cin >> C[i];
+    }
+
+    vector<int> result = solve(N, C);
+    for (int i = 0; i < result.size(); i++) {
+        cout << result[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
