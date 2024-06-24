@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> adj(n);
+        for (auto edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+        }
+        vector<bool> visited(n, false);
+        return dfs(adj, source, destination, visited);
+    }
+
+    bool dfs(vector<vector<int>>& adj, int node, int destination, vector<bool>& visited) {
+        if (node == destination) return true;
+        visited[node] = true;
+        for (int child : adj[node]) {
+            if (!visited[child] && dfs(adj, child, destination, visited)) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
