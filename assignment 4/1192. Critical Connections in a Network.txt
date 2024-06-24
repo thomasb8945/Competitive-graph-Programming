@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> graph(n);
+        for (auto& conn : connections) {
+            graph[conn[0]].push_back(conn[1]);
+            graph[conn[1]].push_back(conn[0]);
+        }
+
+        vector<int> low(n, -1);
+        vector<int> disc(n, -1);
+        vector<vector<int>> res;
+        dfs(0, -1, low, disc, graph, res, 0);
+
+        return res;
+    }
+
+private:
+    void dfs(int node, int parent, vector<int>& low, vector<int>& disc, vector<vector<int>>& graph, vector<vector<int>>& res, int time) {
+        low[node] = disc[node] = time++;
+        for (int neighbor : graph[node]) {
+            if (disc[neighbor] == -1) {
+                dfs(neighbor, node, low, disc, graph, res, time);
+                low[node] = min(low[node], low[neighbor]);
+                if (low[neighbor] > disc[node]) {
+                    res.push_back({node, neighbor});
+                }
+            } else if (neighbor != parent) {
+                low[node] = min(low[node], disc[neighbor]);
+            }
+        }
+    }
+};
